@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon';
 import { defineStore } from 'pinia';
-import { fetchApi } from '../api';
 import { Period } from '../constants';
 import { Post, today, thisWeek, thisMonth, TimelinePost } from '../posts';
 
@@ -27,8 +26,8 @@ export const usePosts = defineStore('posts', {
     },
 
     async fetchPosts() {
-      const response = await fetchApi('/api/posts');
-      const posts = response.data;
+      const response = await window.fetch('/api/posts');
+      const posts = await response.json();
       await delay();
 
       let ids: string[] = [];
@@ -43,9 +42,14 @@ export const usePosts = defineStore('posts', {
     },
 
     createPost(post: TimelinePost) {
-      return fetchApi('/api/posts', {
+      const body = JSON.stringify({ ...post, created: post.created.toISO() });
+
+      return window.fetch('/api/posts', {
         method: 'POST',
-        data: { ...post, created: post.created.toISO() },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body,
       });
     },
   },

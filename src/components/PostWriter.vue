@@ -33,7 +33,6 @@ const parseHtml = (markdown: string) => {
       },
     },
     (err, parseResult) => {
-      console.log('parseResult', parseResult);
       html.value = parseResult;
     }
   );
