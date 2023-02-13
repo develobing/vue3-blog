@@ -4,10 +4,15 @@ import { useRouter } from 'vue-router';
 import debounce from 'lodash/debounce';
 import { marked } from 'marked';
 import highlightjs from 'highlight.js';
-import { TimelinePost } from '../posts';
+import { Post, TimelinePost } from '../posts';
 import { usePosts } from '../stores/posts';
+import { useUsers } from '../stores/users';
 
-const props = defineProps<{ post: TimelinePost }>();
+const props = defineProps<{ post: TimelinePost | Post }>();
+
+const emit = defineEmits<{
+  (event: 'submit', post: Post): void;
+}>();
 
 const title = ref(props.post.title);
 const content = ref(props.post.markdown);
@@ -15,6 +20,7 @@ const html = ref('');
 const contentEditable = ref<HTMLDivElement>();
 
 const posts = usePosts();
+const usersStore = useUsers();
 const router = useRouter();
 
 const parseHtml = (markdown: string) => {
@@ -65,15 +71,23 @@ const handleInput = () => {
 };
 
 const handleClick = async () => {
-  const newPost: TimelinePost = {
+  if (!usersStore.currentUserId) {
+    throw new Error('User is not logged in');
+  }
+
+  const newPost: Post = {
     ...props.post,
+    created:
+      typeof props.post.created === 'string'
+        ? props.post.created
+        : props.post.created.toISO(),
     title: title.value,
     markdown: content.value,
     html: html.value,
+    authorId: usersStore.currentUserId,
   };
 
-  await posts.createPost(newPost);
-  router.push('/');
+  emit('submit', newPost);
 };
 </script>
 
