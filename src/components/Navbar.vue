@@ -28,14 +28,18 @@ const logout = async () => {
 
         <RouterLink to="/" class="button" v-else>Home</RouterLink>
 
-        <button class="button" @click="logout()">Log Out</button>
+        <button id="logout" class="button" @click="logout()">Log Out</button>
       </div>
 
       <div class="buttons" v-else>
-        <button class="button" @click="modal.showModal('signUp')">
+        <button id="sign-up" class="button" @click="modal.showModal('signUp')">
           Sign Up
         </button>
-        <button class="button" @click="modal.showModal('signIn')">
+        <button
+          data-testid="sign-in"
+          class="button"
+          @click="modal.showModal('signIn')"
+        >
           Sign In
         </button>
       </div>

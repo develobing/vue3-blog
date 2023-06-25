@@ -32,5 +32,10 @@ const handleSignin = async (newUser: NewUser) => {
 </script>
 
 <template>
-  <UserForm title="Sign In" :error="error" @submit="handleSignin" />
+  <UserForm
+    id="signin-form"
+    title="Sign In"
+    :error="error"
+    @submit="handleSignin"
+  />
 </template>

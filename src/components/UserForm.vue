@@ -66,12 +66,14 @@ async function handleSubmit() {
     <FormInput
       type="text"
       name="Username"
+      data-testid="username"
       v-model="username"
       :status="usernameStatus"
     />
     <FormInput
       type="password"
       name="Password"
+      data-testid="password"
       v-model="password"
       :status="passwordStatus"
     />

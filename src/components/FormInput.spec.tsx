@@ -7,14 +7,14 @@ describe('FormInput', () => {
   it('tests validations', async () => {
     const Parent = defineComponent({
       components: { FormInput },
-      template: `
-        <FormInput
-          name="foo"
-          type="input"
-          :status="status"
-          v-model="formValue"
-        />
-      `,
+      // template: `
+      //   <FormInput
+      //     name="foo"
+      //     type="input"
+      //     :status="status"
+      //     v-model="formValue"
+      //   />
+      // `,
 
       setup() {
         const formValue = ref('foo');
@@ -35,6 +35,15 @@ describe('FormInput', () => {
           formValue,
           status,
         };
+
+        return () => (
+          <FormInput
+            name="foo"
+            type="input"
+            status={status.value}
+            modelValue={formValue.value}
+          />
+        );
       },
     });
 

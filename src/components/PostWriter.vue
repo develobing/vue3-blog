@@ -17,7 +17,7 @@ const emit = defineEmits<{
 const title = ref(props.post.title);
 const content = ref(props.post.markdown);
 const html = ref('');
-const contentEditable = ref<HTMLDivElement>();
+const contenteditable = ref<HTMLDivElement>();
 
 const posts = usePosts();
 const usersStore = useUsers();
@@ -55,19 +55,23 @@ watch(
 );
 
 onMounted(() => {
-  if (!contentEditable.value) {
-    throw new Error('contentEditable DOM node was not found');
+  if (!contenteditable.value) {
+    throw new Error('contenteditable DOM node was not found');
   }
 
-  contentEditable.value.innerText = content.value;
+  contenteditable.value.innerText = content.value;
 });
 
 const handleInput = () => {
-  if (!contentEditable.value) {
-    throw new Error('contentEditable DOM node was not found');
+  if (!contenteditable.value) {
+    throw new Error('contenteditable DOM node was not found');
   }
 
-  content.value = contentEditable.value.innerText;
+  console.log(
+    'contenteditable.value.innerText',
+    contenteditable.value.innerText
+  );
+  content.value = contenteditable.value.innerText;
 };
 
 const handleClick = async () => {
@@ -103,7 +107,12 @@ const handleClick = async () => {
 
   <div class="columns">
     <div class="column">
-      <div contenteditable ref="contentEditable" @input="handleInput" />
+      <div
+        contenteditable
+        id="contenteditable"
+        ref="contenteditable"
+        @input="handleInput"
+      />
     </div>
 
     <div class="column">
@@ -113,7 +122,11 @@ const handleClick = async () => {
 
   <div class="columns">
     <div class="column">
-      <button class="button is-primary is-pulled-right" @click="handleClick">
+      <button
+        id="submit"
+        class="button is-primary is-pulled-right"
+        @click="handleClick"
+      >
         Save Post
       </button>
     </div>
